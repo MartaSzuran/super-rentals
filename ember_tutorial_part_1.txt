@@ -1,0 +1,43 @@
+As we learned earlier, the Ember convention is to place your source code in the app folder. 
+For other assets like images and fonts, the convention is to put them in the public folder. 
+We will follow this convention by downloading the image file and saving it into 
+public/assets/images/teaching-tomster.png.
+
+This time, we would like the page to be served on the /about URL. 
+In order to do this, we will need to tell Ember about our plan to add a page at that location. 
+Otherwise, Ember will think we have visited an invalid URL!
+
+The place to manage what pages are available is the router.
+
+SO TO ADD NEW PAGE FIRST I NEED TO VISIT ROUTER.JS.
+and add code: 
+
+Router.map(function () {
+  this.route('about');
+});
+
+-------------
+
+creating in templates about.hbs
+
+this.route('contact', {path: 'getting-in-touch'});  <- alias is contact but the path will be 
+getting-in-touch
+
+
+Since Ember offers great support for URLs out-of-the-box, we could just link our pages together 
+using the <a> tag with the appropriate href. But in ember they provide us <LinkTo>
+syntax: 
+<LinkTo @route="about" class="button">About</LinkTo>
+
+<LinkTo>-  is an example of a component
+@route  -  is how we pass arguments into the component
+Note that this should be the name of the route, not the path, 
+which is why we specified "about" instead of "/about"
+
+passed without the @ symbol (class=... as opposed to @class=...), 
+so that Ember will know they are just regular HTML attributes.
+
+<LinkTo> avoid full page refresh in opposite to <a> which refresh all page by sending request to the server
+
+
+
