@@ -38,6 +38,63 @@ passed without the @ symbol (class=... as opposed to @class=...),
 so that Ember will know they are just regular HTML attributes.
 
 <LinkTo> avoid full page refresh in opposite to <a> which refresh all page by sending request to the server
+------------------------------
+TESTES
+Adding Acceptance Tests with Generators
+
+$ ember generate acceptance-test super-rentals
+installing acceptance-test
+  create tests/acceptance/super-rentals-test.js
+
+This is called a generator command in Ember CLI.
+
+follows the pattern ember generate <type> <name>, 
+where <type> is the kind of thing we are generating, and <name> is what we want to call it.
+
+we can call also ember g <type> <name>
+
+acceptance test == application test
+
+import { module, test } from 'qunit';
+import { click, visit, currentURL } from '@ember/test-helpers';
+import { setupApplicationTest } from 'ember-qunit';
+
+module('Acceptance | super rentals', function (hooks) {
+  setupApplicationTest(hooks);
+
+  test('visiting /', async function (assert) {
+    await visit('/');
+
+    assert.strictEqual(currentURL(), '/');
+    assert.dom('h2').hasText('Welcome to Super Rentals!');
+
+    assert.dom('.jumbo a.button').hasText('About Us');
+    await click('.jumbo a.button');
+
+    assert.strictEqual(currentURL(), '/about');
+  });
+});
+
+
+test('visiting /' ... - visit is ember test helper - it is like we type go to 
+http://localhost:4200/ in the browser's address bar and hitting the enter key
+
+!!!! AWAIT
+await keyword. That way, it will wait until the page completely finishes loading before moving on to the next step.
+any user interaction, needs to be await-ed.
+
+await visit('/');
+This is almost always the behavior we want, so we will almost always use await and visit as a pair.
+
+assert.dom('.jumbo a.button')
+"look inside the tag with the jumbo class for an <a> tag with the button class."
+
+
+assert.strictEqual(currentURL(), '/about');
+Finally, we asserted that clicking on the link should bring us to the /about URL.
+
+
+
 
 
 
