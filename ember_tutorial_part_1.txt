@@ -212,3 +212,24 @@ This time, we had a / in the component's name. This resulted in the component be
 Components like these are known as namespaced components. Namespacing allows us to organize our components by folders according to their purpose.
 which can be invoked as <Rental::Image>
 
+I have folder in templets rental/image.hbs
+---------------------------------------
+Forwarding HTML Attributes with ...attributes
+
+
+in: app/components/rental/image.hbs
+add:
+
+<div class="image">
+  <img ...attributes>
+</div>
+
+then this in app/components/rental.hbs:
+  <Rental::Image
+    src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg"
+    alt="A picture of Grand Old Mansion"
+  />
+
+adding tests to tests/integration/components/rental/image-test.js and 
+tests/integration/components/rental-test.js
+
