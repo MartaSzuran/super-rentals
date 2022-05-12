@@ -195,4 +195,20 @@ so I need to create that file into templates :
 
 and delete all navbar because I have two at the moment :) 
 
+---------------------------
+Generating Components
+
+ember generate component rental
+
+ - then add components/rental.hbs
+ - then add test
+
+----------------------------------------------------
+Organizing Code with Namespaced Components
+
+ember generate component rental/image
+
+This time, we had a / in the component's name. This resulted in the component being created at app/components/rental/image.hbs, 
+Components like these are known as namespaced components. Namespacing allows us to organize our components by folders according to their purpose.
+which can be invoked as <Rental::Image>
 
