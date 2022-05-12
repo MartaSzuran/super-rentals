@@ -137,7 +137,51 @@ just need to emcapsulate content into Jumbo tags :
 -----------------------
 writing test for components
 
+$ ember generate component-test jumbo
+installing component-test
+  create tests/integration/components/jumbo-test.js
 
+Here, we used the generator to generate a component test, also known as a rendering test. 
+
+-------------------------
+creating navbar
+
+create a <NavBar> component at app/components/nav-bar.hbs
+
+app/components/nav-bar.hbs
+
+<nav class="menu">
+  <LinkTo @route="index" class="menu-index">
+    <h1>SuperRentals</h1>
+  </LinkTo>
+  <div class="links">
+    <LinkTo @route="about" class="menu-about">
+      About
+    </LinkTo>
+    <LinkTo @route="contact" class="menu-contact">
+      Contact
+    </LinkTo>
+  </div>
+</nav>
+
+then add at the beggining of each page:
+<NavBar />
+<Jumbo>
+  <h2>About Super Rentals</h2>
+  <p>
+    The Super Rentals website is a delightful project created to explore Ember.
+    By building a property rental site, we can simultaneously imagine traveling
+    AND building Ember applications.
+  </p>
+  <LinkTo @route="contact" class="button">Contact Us</LinkTo>
+</Jumbo>
+
+<NavBar /> is a shorthand for <NavBar></NavBar>.
+
+we need to add some test to acceptence tests, because navigation bar should work throughout all app
+
+-----------------------
+Using the Application Template and {{outlet}}s
 
 
 
