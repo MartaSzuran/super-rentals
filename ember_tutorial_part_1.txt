@@ -183,6 +183,16 @@ we need to add some test to acceptence tests, because navigation bar should work
 -----------------------
 Using the Application Template and {{outlet}}s
 
+special template called application.hbs
 
+so I need to create that file into templates :
+<div class="container">
+  <NavBar />
+  <div class="body">
+    {{outlet}}
+  </div>
+</div>
+
+and delete all navbar because I have two at the moment :) 
 
 
