@@ -75,6 +75,7 @@ module('Acceptance | super rentals', function (hooks) {
   });
 });
 
+!!!!test into motion by running the test server using the ember test --server!!!!
 
 test('visiting /' ... - visit is ember test helper - it is like we type go to 
 http://localhost:4200/ in the browser's address bar and hitting the enter key
@@ -92,6 +93,49 @@ assert.dom('.jumbo a.button')
 
 assert.strictEqual(currentURL(), '/about');
 Finally, we asserted that clicking on the link should bring us to the /about URL.
+
+---------------------------
+COMPONENTS
+
+component - way to pack code which is repeating
+
+like:
+<div class="jumbo">
+  <div class="right tomster"></div>
+  <!-- page specific content -->
+</div>
+
+then create new file f.e.app/components/jumbo.hbs
+and:
+<div class="jumbo">
+  <div class="right tomster"></div>
+  {{yield}}
+</div>
+
+then just use in code : 
+<Jumbo>  <- with capitalize letter!! 
+
+The jumbo.hbs template corresponds to the <Jumbo> tag,
+just like super-awesome.hbs corresponds to <SuperAwesome>.
+----------------
+
+Passing Content to Components with {{yield}}
+
+just need to emcapsulate content into Jumbo tags :
+<Jumbo>some content</Jumbo>
+
+<Jumbo>
+  <h2>About Super Rentals</h2>
+  <p>
+    The Super Rentals website is a delightful project created to explore Ember.
+    By building a property rental site, we can simultaneously imagine traveling
+    AND building Ember applications.
+  </p>
+  <LinkTo @route="contact" class="button">Contact Us!</LinkTo>
+</Jumbo>
+
+-----------------------
+writing test for components
 
 
 
