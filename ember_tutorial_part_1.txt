@@ -428,3 +428,14 @@ and in map.hbs
 get src()  <- getters 
 All arguments that can be accessed from this.args (in other words, this.args.*) 
 are implicitly marked as @tracked by the Glimmer component superclass
+
+ADDING TESTS:
+Using the special this.setProperties testing API, we can pass arbitrary 
+values into our component.
+
+Instead, this refers to a special test context object, which we have access to inside the 
+render helper. This provides a "bridge" for us to pass dynamic values, in the form of arguments, 
+into our invocation of the component. 
+This allows us to update these values as needed from the test function.
+
+----
