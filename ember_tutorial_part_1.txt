@@ -257,6 +257,14 @@ export default class RentalImageComponent extends Component {
   }
 }
 
+more concise:
+import Component from '@glimmer/component';
+
+export default class RentalImageComponent extends Component {
+  isLarge = false;
+}
+
+
 Here, in the component's constructor, we initialized the instance variable this.isLarge with the value false, 
 since this is the default state that we want for our component.
 
@@ -275,5 +283,50 @@ we need to update template in app/components/rental/image.hbs
   </div>
 {{/if}}
 
+adding managing state with tracked properties
+
+by adding a method into image.js:
+
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
+
+export default class RentalImageComponent extends Component {
+  @ tracked isLarge = false;
+
+  @action toggleSize() {
+    this.isLarge = !this.isLarge;
+  }
+}
 
 
+First, we added the @tracked decorator to the isLarge instance variable. 
+This annotation tells Ember to monitor this variable for updates. 
+Whenever this variable's value changes, 
+Ember will automatically re-render any templates that depend on its value.
+
+method toggleSize() :
+
+toggleSize() {
+    this.isLarge = !this.isLarge;
+  }
+Next, we added a toggleSize method to our class that switches this.isLarge to the opposite 
+of its current state (false becomes true, or true becomes false).
+
+with adding @action - This indicates to Ember that we intend to use this method from our template. 
+
+NEXT wire this up in the template in : app/components/rental/image.hbs
+
+--
+<button type="button" class="image" {{on "click" this.toggleSize}}>
+
+First, since we wanted to make our component interactive, we switched the 
+containing tag from <div> to <button> (this is important for accessibility reasons). 
+By using the correct semantic tag, we will also get focusability and keyboard interaction 
+handling "for free".
+
+Next, we used the {{on}} modifier to attach 
+this.toggleSize as a click handler on the button.
+
+-------------
+adding tests
