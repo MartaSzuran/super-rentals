@@ -354,6 +354,7 @@ MANAGING APPLICATION-level CONFIGURATIONS
 
 
 Generating a Component with a Component Class:
+in other words the component with js file
 
 ember generate component map --with-component-class
 
@@ -364,7 +365,26 @@ JavaScript file for some behavior that we have yet to define! To save a step lat
 pass the --with-component-class flag to the component generator so that we have everything 
 we need from the get-go.
 
+in: map.hbs
 
+<div class="map">
+  <img 
+    alt="Map image at coordinates {{@lat}}, {{@lng}}"
+    ...attributes
+    src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/{{@lng}},{{@lat}},{{@zoom}}/{{@width}}x{{@height}}@2x?access_token={{this.token}}"
+    width={{@width}} height={{@height}}
+  >
+</div>
 
+Our template contains several values that don't yet exist—@lat, @lng, @zoom, @width, and @height. 
+These are arguments to the <Map> component that we will supply when invoking it.
 
+By parameterizing our component using arguments, we made a reusable component that can be invoked 
+from different parts of the app and customized to meet the needs for those specific contexts.
 
+alt="Map image at coordinates {{@lat}}, {{@lng}}" - directly interpolating values into the alt attribute's value
+
+The ordering is important here! Ember applies the attributes in the order that they appear.
+values written before ...attributes will be override if their value will change, 
+and attributes like width, and height need to be after ...attributes, so that they don't get 
+accidentally overwritten by the invoker.
