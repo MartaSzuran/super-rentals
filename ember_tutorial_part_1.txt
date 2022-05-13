@@ -351,3 +351,20 @@ second:
 
 --------------------------
 MANAGING APPLICATION-level CONFIGURATIONS
+
+
+Generating a Component with a Component Class:
+
+ember generate component map --with-component-class
+
+shorter : ember g component map -gc
+
+However, in the case of our <Map> component, we are pretty sure that we are going to need a 
+JavaScript file for some behavior that we have yet to define! To save a step later, we can 
+pass the --with-component-class flag to the component generator so that we have everything 
+we need from the get-go.
+
+
+
+
+
