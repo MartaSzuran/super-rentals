@@ -233,3 +233,47 @@ then this in app/components/rental.hbs:
 adding tests to tests/integration/components/rental/image-test.js and 
 tests/integration/components/rental-test.js
 
+-----------------------------------------------
+Interactive Components
+
+Adding Behavior to Components with Classes
+
+add a JavaScript file for our <Rental::Image> component by running the component-class generator:
+
+$ ember generate component-class rental/image
+
+
+This generated a JavaScript file with the same name as our component's template at app/components/rental/image.js. 
+It contains a JavaScript class, inheriting from @glimmer/component.
+@glimmer/component, or Glimmer component, is one of the several component classes available to use. 
+
+
+import Component from '@glimmer/component';
+
+export default class RentalImageComponent extends Component {
+  constructor(...args) {
+    super(...args);
+    this.isLarge = false;
+  }
+}
+
+Here, in the component's constructor, we initialized the instance variable this.isLarge with the value false, 
+since this is the default state that we want for our component.
+
+we need to update template in app/components/rental/image.hbs
+
+
+{{#if this.isLarge}}
+  <div class="image large">
+    <img ...attributes>
+    <small>View Smaller</small>
+  </div>
+{{else}}
+  <div class="image">
+    <img ...attributes>
+    <small>View Larger</small>
+  </div>
+{{/if}}
+
+
+
