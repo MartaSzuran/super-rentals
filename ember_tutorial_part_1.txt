@@ -349,3 +349,5 @@ second:
   <small>View {{if this.isLarge "Smaller" "Larger"}}</small>
 </button>
 
+--------------------------
+MANAGING APPLICATION-level CONFIGURATIONS
