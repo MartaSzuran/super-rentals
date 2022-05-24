@@ -630,6 +630,85 @@ The Fetch API takes this into account, which is why fetch is an async function,
 just like our model hook. To consume its response, we will have to pair it with the
  await keyword.
 
+parse the response data accordingly 
+Parsing the response data is also an asynchronous operation, so we'll just use the await 
+keyword here, too.
+
+[
+The JSON.parse() method parses a JSON string, constructing the JavaScript value or 
+object described by the string. An optional reviver function can be provided to 
+perform a transformation on the resulting object before it is returned.
+
+const json = '{"result":true, "count":42}';
+const obj = JSON.parse(json);
+
+f.e.:
+console.log(obj.count);
+// expected output: 42
+
+console.log(obj.result);
+// expected output: true
+]
+
+---------------------------------------
+Adapting Server Data
+
+changing some code to make it able to work with JSON
+
+app/routes/index.js
+
+import Route from '@ember/routing/route';
+
+const COMMUNITY_CATEGORIES = ['Condo', 'Townhouse', 'Apartment'];
+
+export default class IndexRoute extends Route {
+  async model() {
+    let response = await fetch('/api/rentals.json');
+    let parsed = await response.json();
+    return parsed;
+    let { data } = await response.json();
+
+    return data.map((model) => {
+      let { attributes } = model;
+      let type;
+
+      if (COMMUNITY_CATEGORIES.includes(attributes.category)) {
+        type = 'Community';
+      } else {
+        type = 'Standalone';
+      }
+
+      return { type, ...attributes };
+    });
+  }
+}
+---------------
+Loops and Local Variables in Templates with {{#each}}
+
+Inside of the block we have access to the item of the current iteration with the {{rental}} 
+variable. But why rental? Well, because we named it that! This variable comes from the as 
+|rental| declaration of the each loop. We could have just as easily called it something else, 
+like as |property|, in which case we would have to access the current item through the 
+{{property}} variable.
+
+app/templates/index.hbs
+
+<Jumbo>
+  <h2>Welcome to Super Rentals!</h2>
+  <p>We hope you find exactly what you're looking for in a place to stay.</p>
+  <LinkTo @route="about" class="button">About Us</LinkTo>
+</Jumbo>
+
+<div class="rentals">
+  <ul class="results">
+    <li><Rental @rental={{@model}} /></li>
+    <li><Rental @rental={{@model}} /></li>
+    <li><Rental @rental={{@model}} /></li>
+    {{#each @model as |rental|}}
+      <li><Rental @rental={{rental}} /></li>
+    {{/each}}
+  </ul>
+</div>
 
 
 
