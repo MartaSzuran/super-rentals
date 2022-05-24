@@ -29,8 +29,8 @@ using the <a> tag with the appropriate href. But in ember they provide us <LinkT
 syntax: 
 <LinkTo @route="about" class="button">About</LinkTo>
 
-<LinkTo>-  is an example of a component
-@route  -  is how we pass arguments into the component
+<LinkTo> -  is an example of a component
+@route   -  is how we pass arguments into the component
 Note that this should be the name of the route, not the path, 
 which is why we specified "about" instead of "/about"
 
@@ -438,4 +438,60 @@ render helper. This provides a "bridge" for us to pass dynamic values, in the fo
 into our invocation of the component. 
 This allows us to update these values as needed from the test function.
 
-----
+----------------------------------------------
+Working with Route Files
+
+start working with server:
+
+creating index.js adding to app/routes/index.js:
+
+import Route from '@ember/routing/route';   <-route class
+
+export default class IndexRoute extends Route {
+  async model() {
+    return {
+      title: 'Grand Old Mansion',
+      owner: 'Veruca Salt',
+      city: 'San Francisco',
+      location: {
+        lat: 37.7749,
+        lng: -122.4194,
+      },
+      category: 'Estate',
+      type: 'Standalone',
+      bedrooms: 15,
+      image: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
+      description: 'This grand old mansion sits on over 100 acres of rolling hills and dense redwood forests.',
+    };
+  }
+}
+
+Route class into the file. This class is used as a starting point for 
+adding functionality to a route, such as loading data.
+
+using word export <- means that the rest of the application can use it.
+
+----------------
+Returning Local Data from the Model Hook
+
+async method called model(). This method is also known as the model hook.
+
+why async?
+fetching data is usually an asynchronous operation, 
+the model hook is marked as async
+
+The object returned from this hook is known as the model for the route.
+
+-----------------------------------------
+Accessing Route Models from Templates
+
+Plain Old Java Object (POJO) – termin używany przez zwolenników idei mówiącej, 
+że im prostszy design tym lepiej. 
+Używa się go dla określenia obiektów, będących zwyczajnymi obiektami Java.
+
+in app/templates/index.hbs add:
+<h1>{{ @model.title }}</h1>  <- to check if it is working :) 
+
+
+
+
