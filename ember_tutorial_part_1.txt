@@ -492,6 +492,144 @@ Używa się go dla określenia obiektów, będących zwyczajnymi obiektami Java.
 in app/templates/index.hbs add:
 <h1>{{ @model.title }}</h1>  <- to check if it is working :) 
 
+finally:
+app/templates/index.hbs
+
+<Jumbo>
+  <h2>Welcome to Super Rentals!</h2>
+  <p>We hope you find exactly what you're looking for in a place to stay.</p>
+  <LinkTo @route="about" class="button">About Us</LinkTo>
+</Jumbo>
+
+<h1>{{@model.title}}</h1>
+
+<div class="rentals">
+  <ul class="results">
+    <li><Rental /></li>
+    <li><Rental /></li>
+    <li><Rental /></li>
+    <li><Rental @rental={{@model}} /></li>
+    <li><Rental @rental={{@model}} /></li>
+    <li><Rental @rental={{@model}} /></li>
+  </ul>
+</div>
+
+and then in rental.hbs:
+
+app/components/rental.hbs
+
+<article class="rental">
+  <Rental::Image
+    src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg"
+    alt="A picture of Grand Old Mansion"
+    src={{@rental.image}}
+    alt="A picture of {{@rental.title}}"
+  />
+  <div class="details">
+    <h3>Grand Old Mansion</h3>
+    <h3>{{@rental.title}}</h3>
+    <div class="detail owner">
+      <span>Owner:</span> Veruca Salt
+      <span>Owner:</span> {{@rental.owner}}
+    </div>
+    <div class="detail type">
+      <span>Type:</span> Standalone
+      <span>Type:</span> {{@rental.type}}
+    </div>
+    <div class="detail location">
+      <span>Location:</span> San Francisco
+      <span>Location:</span> {{@rental.city}}
+    </div>
+    <div class="detail bedrooms">
+      <span>Number of bedrooms:</span> 15
+      <span>Number of bedrooms:</span> {{@rental.bedrooms}}
+    </div>
+  </div>
+  <Map
+    @lat="37.7749"
+    @lng="-122.4194"
+    @lat={{@rental.location.lat}}
+    @lng={{@rental.location.lng}}
+    @zoom="9"
+    @width="150"
+    @height="150"
+    alt="A map of Grand Old Mansion"
+    alt="A map of {{@rental.title}}"
+  />
+</article>
+
+---------------------
+adding tests:
+
+we need to use setProperties ({}) <- because ors test doesnt have any routing.
+
+tests/integration/components/rental-test.js
+
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import { hbs } from 'ember-cli-htmlbars';
+
+module('Integration | Component | rental', function (hooks) {
+  setupRenderingTest(hooks);
+
+  test('it renders information about a rental property', async function (assert) {
+    await render(hbs`<Rental />`);
+    this.setProperties({
+      rental: {
+        title: 'Grand Old Mansion',
+        owner: 'Veruca Salt',
+        city: 'San Francisco',
+        location: {
+          lat: 37.7749,
+          lng: -122.4194,
+        },
+        category: 'Estate',
+        type: 'Standalone',
+        bedrooms: 15,
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/c/cb/Crane_estate_(5).jpg',
+        description:
+          'This grand old mansion sits on over 100 acres of rolling hills and dense redwood forests.',
+      },
+    });
+
+    await render(hbs`<Rental @rental={{this.rental}} />`);
+
+    assert.dom('article').hasClass('rental');
+    assert.dom('article h3').hasText('Grand Old Mansion');
+    assert.dom('article .detail.owner').includesText('Veruca Salt');
+    assert.dom('article .detail.type').includesText('Standalone');
+    assert.dom('article .detail.location').includesText('San Francisco');
+    assert.dom('article .detail.bedrooms').includesText('15');
+    assert.dom('article .image').exists();
+    assert.dom('article .map').exists();
+  });
+});
+
+
+-------------------------------------------
+Mocking Server Data with Static JSON Files
+
+I have imported some json file to simulate working with server.
+
+in app/routes/index.js change hard-coded data for taking input from JSON:
+
+import Route from '@ember/routing/route';
+
+export default class IndexRoute extends Route {
+  async model() {
+    let response = await fetch('/api/rentals.json');
+    let parsed = await response.json();
+    return parsed;
+  }
+}
+
+As mentioned above, fetching data from the server is usually an asynchronous operation. 
+The Fetch API takes this into account, which is why fetch is an async function, 
+just like our model hook. To consume its response, we will have to pair it with the
+ await keyword.
+
 
 
 
