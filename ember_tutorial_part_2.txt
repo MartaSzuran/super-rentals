@@ -89,4 +89,5 @@ segment to figure out which rental object we're trying to fetch from the server.
 ------------------
 Displaying Model Details with a Component
 
+in the tutorial there was a lot of adding some staff, now I just dont know what is going on ... 
 
