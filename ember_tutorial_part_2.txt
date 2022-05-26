@@ -1,3 +1,7 @@
+Routes with Dynamic Segments
+
+app/router.js
+
 import EmberRouter from '@ember/routing/router';
 import config from 'super-rentals/config/environment';
 
@@ -8,6 +12,10 @@ export default class Router extends EmberRouter {
 
 Router.map(function () {
   this.route('about');
-  this.route('contact', { path: 'getting-in-touch' });
+  this.route('contact', { path: '/getting-in-touch' });
   this.route('rental', { path: '/rentals/:rental_id' });
 });
+
+:rental_id, which is what we call a dynamic segment. When these routes are evaluated, the rental_id 
+will be substituted with the id of the individual rental property that we are trying to navigate to.
+
