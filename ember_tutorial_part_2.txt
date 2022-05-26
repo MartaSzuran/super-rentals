@@ -16,6 +16,77 @@ Router.map(function () {
   this.route('rental', { path: '/rentals/:rental_id' });
 });
 
-:rental_id, which is what we call a dynamic segment. When these routes are evaluated, the rental_id 
+:rental_id - is what we call a dynamic segment. When these routes are evaluated, the rental_id 
 will be substituted with the id of the individual rental property that we are trying to navigate to.
+
+Links with Dynamic Segments
+
+app/components/rental.hbs
+
+<article class="rental">
+  <Rental::Image
+    src={{@rental.image}}
+    alt="A picture of {{@rental.title}}"
+  />
+  <div class="details">
+    <h3>{{@rental.title}}</h3>
+    <h3>
+      <LinkTo @route="rental" @model={{@rental}}>
+        {{@rental.title}}
+      </LinkTo>
+    </h3>
+    <div class="detail owner">
+
+adding id to the model:
+app/routes/index.js
+
+import Route from '@ember/routing/route';
+
+const COMMUNITY_CATEGORIES = ['Condo', 'Townhouse', 'Apartment'];
+
+export default class IndexRoute extends Route {
+  async model() {
+    let response = await fetch('/api/rentals.json');
+    let { data } = await response.json();
+
+    return data.map((model) => {
+      let { attributes } = model;
+      let { id, attributes } = model;
+      let type;
+
+      if (COMMUNITY_CATEGORIES.includes(attributes.category)) {
+        type = 'Community';
+      } else {
+        type = 'Standalone';
+      }
+
+      return { type, ...attributes };
+      return { id, type, ...attributes };
+    });
+  }
+}
+---------------------------
+
+Accessing Parameters from Dynamic Segments
+
+in: app/routes/rental.js
+
+import Route from '@ember/routing/route';
+
+const COMMUNITY_CATEGORIES = ['Condo', 'Townhouse', 'Apartment'];
+export default class RentalRoute extends Route {
+  async model(params) {
+    let response = await fetch(`/api/rentals/${params.rental_id}.json`);
+
+
+Unlike the IndexRoute, we have a params object being passed into our model hook. 
+This is because we need to fetch our data from the /api/rentals/${id}.json endpoint, 
+not the /api/rentals.json endpoint we were previously using. We already know that the 
+individual rental endpoints fetch a single rental object, rather than an array of them, 
+and that the route uses a /:rental_id dynamic 
+segment to figure out which rental object we're trying to fetch from the server.
+
+------------------
+Displaying Model Details with a Component
+
 
